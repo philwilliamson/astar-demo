@@ -1,0 +1,58 @@
+#canvas {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;    
+}
+
+.grid {    
+    display: flex;
+    flex-wrap: wrap;
+    background-color: gray;
+}
+
+.tile {
+    border-style: solid;
+    border-color: black;
+}
+
+.tile.clear {
+    background-color: cyan;
+}
+
+.tile.blocked {
+    background-color: black;
+}
+
+.tile.start {
+    background-color: green;
+}
+
+.tile.goal {
+    background-color: blue;
+}
+
+.tile.open {
+    background-color: red;
+}
+
+.tile.closed {
+    background-color: maroon;
+}
+
+.tile.path {
+    background-color: yellow;
+}
+
+.button-box{
+    margin-left: 25px;
+    width: 110px;
+    height: 200px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+button{
+    height: 20px;
+}
+
+
