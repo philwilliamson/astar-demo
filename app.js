@@ -79,30 +79,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
         get_neighbor_ids(){
             
-            let working_neighbor_list = [];
+            let neighbor_list = [];
+			
+			let node_above_id = null;
+			let node_right_id = null;
+			let node_below_id = null;
+			let node_left_id = null;
+			
+			let node_aboveleft_id = null;
+			let node_aboveright_id = null;
+			let node_belowright_id = null;
+			let node_belowleft_id = null;
+			
+			//Add nodes above, below, and adjacent
 
-            //exclude neighbors when node is on edge
-            for (let j_index = -1; j_index < 2; j_index++){
-                for (let i_index = -1; i_index < 2; i_index++){
-                    let tentative_id = this.node_id + (j_index*grid.width + i_index)
-                    if (tentative_id > -1 && tentative_id < grid.width*grid.height){
-                        if (!(this.node_coords[1] == 0 && i_index == -1) && !(this.node_coords[1] == (grid.width - 1) && i_index == 1)){
-                            working_neighbor_list.push(tentative_id);
-                        }
-                    }
-                }
-            }
+			//Add node above to neighbor list if not blocked and this node not on top edge
+			if (this.node_coords[0] != 0){
+				node_above_id = this.node_id - grid.width;
+				if (!(tileElement(node_above_id).classList.contains('blocked'))){
+					neighbor_list.push(node_above_id);
+				}
+			}
+			
+			//Add node to right to neighbor list if not blocked and this node not on right edge
+			if (this.node_coords[1] != grid.width - 1){
+				node_right_id = this.node_id + 1;
+				if (!(tileElement(node_right_id).classList.contains('blocked'))){
+					neighbor_list.push(node_right_id);
+				}
+			}
+			
+			//Add node to below to neighbor list if not blocked and this node not on bottom edge
+			if (this.node_coords[0] != grid.height - 1){
+				node_below_id = this.node_id + grid.width;
+				if (!(tileElement(node_below_id).classList.contains('blocked'))){
+					neighbor_list.push(node_below_id);
+				}
+			}
+			
+			//Add node to left to neighbor list if not blocked and this node not on left edge
+			if (this.node_coords[1] != 1){
+				node_left_id = this.node_id - 1;
+				if (!(tileElement(node_left_id).classList.contains('blocked'))){
+					neighbor_list.push(node_left_id);
+				}
+			}
 
-            //exclude this tile and tiles that are blocked from neighbor list
-            let neightbor_list = [];
+			//Check and add diagonal nodes
+			//Check above left node
+			if (neighbor_list.includes(node_above_id) && neighbor_list.includes(node_left_id)){
+				node_aboveleft_id = node_above_id - 1
+				if (!(tileElement(node_aboveleft_id).classList.contains('blocked'))){
+					neighbor_list.push(node_aboveleft_id);
+				}
+				
+			}
+			
+			//Check above right node
+			if (neighbor_list.includes(node_above_id) && neighbor_list.includes(node_right_id)){
+				node_aboveright_id = node_above_id + 1
+				if (!(tileElement(node_aboveright_id).classList.contains('blocked'))){
+					neighbor_list.push(node_aboveright_id);
+				}
+				
+			}
+			
+			//Check below right node
+			if (neighbor_list.includes(node_below_id) && neighbor_list.includes(node_right_id)){
+				node_belowright_id = node_below_id + 1
+				if (!(tileElement(node_belowright_id).classList.contains('blocked'))){
+					neighbor_list.push(node_belowright_id);
+				}
+				
+			}
+			
+			//Check below left node
+			if (neighbor_list.includes(node_below_id) && neighbor_list.includes(node_left_id)){
+				node_belowleft_id = node_below_id - 1
+				if (!(tileElement(node_belowleft_id).classList.contains('blocked'))){
+					neighbor_list.push(node_belowleft_id);
+				}
+				
+			}
+            
 
-            for (let index = 0; index < working_neighbor_list.length; index++){
-                if (working_neighbor_list[index] != this.node_id && !(tileElement(working_neighbor_list[index]).classList.contains('blocked'))){
-                    neightbor_list.push(working_neighbor_list[index]);
-                }
-            }
-
-            return neightbor_list;
+            return neighbor_list;
         }
     }
 
@@ -247,6 +308,13 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add('goal');
         }
     }
+
+	function nodeId(node_coords){
+		let node_row = node_coords[0];
+		let node_col = node_coords[1];
+		return node_row*grid.width + node_col;
+	}
+
 
     function tileNumber(tile_element){
         return parseInt(tile_element.id.slice(5));
@@ -440,5 +508,6 @@ document.addEventListener('DOMContentLoaded', () => {
     buttons.appendChild(run_button);
 
     canvas.appendChild(buttons);
+	
 
 });
