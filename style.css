@@ -52,7 +52,11 @@
 }
 
 button{
-    height: 20px;
+    height: 50px;
+	width: 100px;
+	margin-bottom: 40px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 

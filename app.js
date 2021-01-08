@@ -290,24 +290,43 @@ document.addEventListener('DOMContentLoaded', () => {
     function changeTileType() {
         if (button_state == 'blocked'){
             if (this.classList.contains('clear')){
-                this.classList.remove('clear');
-                this.classList.add('blocked');
+                this.className ='';
+                this.classList.add('tile', 'blocked');
             } else if (this.classList.contains('blocked')) {
-                this.classList.remove('blocked');
-                this.classList.add('clear');
+                this.className = '';
+                this.classList.add('tile', 'clear');
             }
         } else if (button_state == 'start'){
             let current_start = document.querySelector(".start");
             if (current_start != null) {current_start.classList.remove('start'); current_start.classList.add('clear');}
-            this.classList.remove('blocked','goal','clear');
-            this.classList.add('start');
+            this.className = '';
+            this.classList.add('tile', 'start');
         } else if (button_state == 'goal'){
             let current_goal = document.querySelector(".goal");
             if (current_goal != null) {current_goal.classList.remove('goal'); current_goal.classList.add('clear');}
-            this.classList.remove('blocked','start','clear');
-            this.classList.add('goal');
+            this.className = '';
+            this.classList.add('tile', 'goal');
         }
     }
+
+	function resetOpenClosedPathTiles(){
+		
+		for (index=0; index<grid.tile_ids.length; index++){
+			current_tile = document.getElementById(grid.tile_ids[index]);
+			current_tile.classList.remove('open', 'closed', 'path');
+			
+		}
+		
+	}
+	
+	function resetAllTiles(){
+		for (index=0; index<grid.tile_ids.length; index++){
+			current_tile = document.getElementById(grid.tile_ids[index]);
+			current_tile.className = '';
+			current_tile.classList.add('tile', 'clear');
+			
+		}
+	}
 
 	function nodeId(node_coords){
 		let node_row = node_coords[0];
@@ -359,7 +378,10 @@ document.addEventListener('DOMContentLoaded', () => {
      }
 
     async function aStar(){
-        let start_tile_element = document.querySelector(".start");
+        
+		resetOpenClosedPathTiles();
+		
+		let start_tile_element = document.querySelector(".start");
         let goal_tile_element = document.querySelector(".goal");
         let start_and_goal_selected = (start_tile_element != null) && (goal_tile_element != null);
 
@@ -483,7 +505,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let buttons = document.createElement('div');
     buttons.classList.add('button-box');
 
-    let obstacle_button = document.createElement('button');
+    let reset_button = document.createElement('button');
+    reset_button.id = 'reset_button';
+    reset_button.innerHTML = 'Reset';
+	reset_button.addEventListener('click', resetAllTiles)
+    buttons.appendChild(reset_button);
+	
+	let obstacle_button = document.createElement('button');
     obstacle_button.id = 'obstacle_button';
     obstacle_button.innerHTML = 'Place Obstacle';
     obstacle_button.addEventListener('click', () => {button_state = 'blocked';})
@@ -504,8 +532,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let run_button = document.createElement('button');
     run_button.id = 'run_button';
     run_button.innerHTML = 'Run';
-    run_button.addEventListener('click', aStar)
+	run_button.addEventListener('click', aStar)
     buttons.appendChild(run_button);
+	
 
     canvas.appendChild(buttons);
 	
