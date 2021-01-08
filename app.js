@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			
 			//Add node to left to neighbor list if not blocked and this node not on left edge
-			if (this.node_coords[1] != 1){
+			if (this.node_coords[1] != 0){
 				node_left_id = this.node_id - 1;
 				if (!(tileElement(node_left_id).classList.contains('blocked'))){
 					neighbor_list.push(node_left_id);
