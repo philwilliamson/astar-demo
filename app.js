@@ -373,9 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function sleep(ms) {
+    function sleep(ms){
         return new Promise(resolve => setTimeout(resolve, ms));
-     }
+    }
 
     async function aStar(){
         

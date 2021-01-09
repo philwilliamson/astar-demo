@@ -22,9 +22,6 @@ Basic functionality is present. User interface needs more work. Below is a list 
 
 Implement directions text so users know how to interact with demo. Implement message box to give user feedback, including when no path is found.
 
-### Reset button
-
-Would be nicer than making user refresh page
 
 ### Improve square placement interface
 
