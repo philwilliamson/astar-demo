@@ -507,31 +507,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let reset_button = document.createElement('button');
     reset_button.id = 'reset_button';
-    reset_button.innerHTML = 'Reset';
+    reset_button.textContent = 'Reset';
 	reset_button.addEventListener('click', resetAllTiles)
     buttons.appendChild(reset_button);
 	
 	let obstacle_button = document.createElement('button');
     obstacle_button.id = 'obstacle_button';
-    obstacle_button.innerHTML = 'Place Obstacle';
+    obstacle_button.textContent = 'Place Obstacle';
     obstacle_button.addEventListener('click', () => {button_state = 'blocked';})
     buttons.appendChild(obstacle_button);
 
     let start_button = document.createElement('button');
     start_button.id = 'start_button';
-    start_button.innerHTML = 'Place Start';
+    start_button.textContent = 'Place Start';
     start_button.addEventListener('click', () => {button_state = 'start';})
     buttons.appendChild(start_button);
 
     let goal_button = document.createElement('button');
     goal_button.id = 'goal_button';
-    goal_button.innerHTML = 'Place Goal';
+    goal_button.textContent = 'Place Goal';
     goal_button.addEventListener('click', () => {button_state = 'goal';})
     buttons.appendChild(goal_button);
 
     let run_button = document.createElement('button');
     run_button.id = 'run_button';
-    run_button.innerHTML = 'Run';
+    run_button.textContent = 'Run';
 	run_button.addEventListener('click', aStar)
     buttons.appendChild(run_button);
 	
