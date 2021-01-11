@@ -51,6 +51,13 @@
     flex-wrap: wrap;
 }
 
+.message-box{
+    margin-left: 50px;
+	margin-top: 10px;
+    width: 500px;
+	display: inline-block;
+}
+
 button{
     height: 50px;
 	width: 100px;

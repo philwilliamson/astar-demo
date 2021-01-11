@@ -378,7 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function aStar(){
-        
 		resetOpenClosedPathTiles();
 		
 		let start_tile_element = document.querySelector(".start");
@@ -499,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let button_state = 'blocked';
 
     //create grid
-    let grid = new TileGrid(35, 35, 20);
+    let grid = new TileGrid(25, 25, 20);
 
     //create buttons
     let buttons = document.createElement('div');
@@ -537,6 +536,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 
     canvas.appendChild(buttons);
+	
+	//create message field
+	
+	
+	let placeholder_msg = 'This is a placeholder message'
+	
+	let message_field = document.createElement('div');
+	message_field.classList.add('message-box');
+	message_field.textContent = placeholder_msg;
+	
+	document.body.appendChild(message_field);
+	
 	
 
 });
