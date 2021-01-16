@@ -311,6 +311,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function resetOpenClosedPathTiles(){
 		
+		message_field.textContent = '';
+		
 		for (index=0; index<grid.tile_ids.length; index++){
 			current_tile = document.getElementById(grid.tile_ids[index]);
 			current_tile.classList.remove('open', 'closed', 'path');
@@ -320,6 +322,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	
 	function resetAllTiles(){
+		
+		message_field.textContent = '';
+		
 		for (index=0; index<grid.tile_ids.length; index++){
 			current_tile = document.getElementById(grid.tile_ids[index]);
 			current_tile.className = '';
@@ -386,6 +391,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (start_and_goal_selected) {
             
+			message_field.textContent = ''
+			
             let start_tile_row = tileCoords(start_tile_element)[0];
             let start_tile_col = tileCoords(start_tile_element)[1];
 
@@ -480,17 +487,31 @@ document.addEventListener('DOMContentLoaded', () => {
             let current_path_list = currentPath(total_node_list, path_end.node_id);
             console.log(current_path_list);
 
-            for (let index = 0; index < current_path_list.length; index++){
-                let tile_element = tileElement(current_path_list[index].node_id);
-                if (tile_element != null && !tile_element.classList.contains('start') && !tile_element.classList.contains('goal')){
-                    tile_element.classList.remove('open', 'closed');
-                    tile_element.classList.add('path');
-                }
-            }
+            
+			
+			
+			if (tileElement(current_path_list[current_path_list.length - 1].node_id).classList.contains('goal')){
+				
+				for (let index = 0; index < current_path_list.length; index++){
+					let tile_element = tileElement(current_path_list[index].node_id);
+					if (tile_element != null && !tile_element.classList.contains('start') && !tile_element.classList.contains('goal')){
+						tile_element.classList.remove('open', 'closed');
+						tile_element.classList.add('path');
+					}
+				}
+				
+				message_field.style.color = 'blue';
+				message_field.textContent = 'Path to Goal successfully found!';
+			}else{
+				message_field.style.color = 'red';
+				message_field.textContent = 'Path to Goal not found!';
+			}
 
 
         } else {
             console.log('Please select a starting and goal tile');
+			message_field.style.color = 'red';
+			message_field.textContent = 'Please place a Start and Goal tile before clicking "Run"';
         }
     }
 
@@ -540,11 +561,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	//create message field
 	
 	
-	let placeholder_msg = 'This is a placeholder message'
+	let feedback_msg = ''
 	
 	let message_field = document.createElement('div');
 	message_field.classList.add('message-box');
-	message_field.textContent = placeholder_msg;
+	message_field.textContent = feedback_msg;
 	
 	document.body.appendChild(message_field);
 	
