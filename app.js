@@ -1,6 +1,64 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    //prevent default scrolling on iphone
+    
     let canvas = document.getElementById('canvas');
+
+    var MOUSE_IS_DOWN = false;
+
+    var TILE_TYPE_CLICKED = 'clear';
+
+    function preventPageDrag(e) {
+        e.preventDefault(); 
+    };
+
+    window.addEventListener("mousedown",(e)=>{
+        MOUSE_IS_DOWN = true;
+        // console.log(MOUSE_IS_DOWN)
+        // console.log(e.type === 'mousedown')
+    })
+
+    window.addEventListener("mouseup",(e)=>{
+        MOUSE_IS_DOWN = false;
+        if (window.getSelection) {window.getSelection().removeAllRanges();}
+        else if (document.selection) {document.selection.empty();}
+        // console.log(MOUSE_IS_DOWN)
+        // console.log(e.type)
+    })
+
+
+    //Functions and event listeners for touch screens
+    var LAST_TILE_CHANGED = null;
+
+    function touchstartHandler(e){
+        touched_element = document.elementFromPoint(e.clientX, e.clientY);
+        if (touched_element.classList.contains('tile')){
+            LAST_TILE_CHANGED = touched_element;
+            changeTileType(e);
+        }
+    }
+
+    function touchendHandler(e){
+        LAST_TILE_CHANGED = null;
+    }
+
+    function touchmoveHandler(e){
+        // e.preventDefault();
+        element_moved_across = document.elementFromPoint(e.clientX, e.clientY);
+        if (element_moved_across.classList.contains('tile') && element_moved_across != LAST_TILE_CHANGED){
+            LAST_TILE_CHANGED = element_moved_across;
+            changeTileType(e);
+        }
+    }
+
+    //Add event listeners
+    // window.addEventListener("touchstart", touchstartHandler)
+
+    window.addEventListener("touchend", touchendHandler)
+
+    // window.addEventListener("touchmove", touchmoveHandler)
+
+
 
     class TileGrid {
         constructor(width, height, tile_width){
@@ -12,8 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < width*height; i++){
                 this.tile_ids.push('tile-'+(i).toString());
             }
-            console.log('A Grid object was created.');
-            console.log(this.tile_ids);
+            // console.log('A Grid object was created.');
+            // console.log(this.tile_ids);
             this.draw();
         }
 
@@ -21,6 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
             //create and insert grid in DOM
             
             let grid_to_insert = document.createElement('div');
+            // grid_to_insert.addEventListener("touchmove", preventPageDrag, {passive: false});
+            grid_to_insert.addEventListener("touchstart", touchstartHandler, {passive: false});
+            grid_to_insert.addEventListener("touchmove", touchmoveHandler, {passive: false});
             grid_to_insert.classList.add('grid');
             //format and append grid
             grid_to_insert.style.width = (this.width*(this.tile_width+2*this.tile_border_width)).toString()+'px';
@@ -28,16 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
             
             //append tiles
             for (let index=0; index < this.width*this.height; index++){
-                let tile_to_insert = document.createElement('a');
-                tile_to_insert.href = "#";
+                let tile_to_insert = document.createElement('div');
+                // tile_to_insert.href = "#";
                 tile_to_insert.id = this.tile_ids[index];
                 tile_to_insert.style.borderWidth = (this.tile_border_width).toString()+'px';
                 tile_to_insert.style.width = (this.tile_width).toString()+'px';
-                tile_to_insert.style.height = (this.tile_width).toString()+'px';;
+                tile_to_insert.style.height = (this.tile_width).toString()+'px';
                 tile_to_insert.classList.add('tile');
-                tile_to_insert.classList.add('clear');
+                //Add start and goal tiles automatically
+                if (Math.floor(index / this.height) == 12 && index % this.width == 6){
+                    tile_to_insert.classList.add('start')
+                } else if (Math.floor(index / this.height) == 12 && index % this.width == 18){
+                    tile_to_insert.classList.add('goal')
+                } else {
+                    tile_to_insert.classList.add('clear');
+                }
                 //click functionality
-                tile_to_insert.addEventListener('click', changeTileType);
+                tile_to_insert.addEventListener('mousedown',(e) => {changeTileType(e, tile_to_insert.id)});
+                tile_to_insert.addEventListener('mouseenter',(e) => {changeTileType(e, tile_to_insert.id)});
                 grid_to_insert.appendChild(tile_to_insert);
             }
            canvas.appendChild(grid_to_insert);
@@ -287,27 +356,52 @@ document.addEventListener('DOMContentLoaded', () => {
         //return Math.abs(start_coords[0] - end_coords[0]) + Math.abs(start_coords[1] - end_coords[1]);
     }
 
-    function changeTileType() {
-        if (button_state == 'blocked'){
-            if (this.classList.contains('clear')){
-                this.className ='';
-                this.classList.add('tile', 'blocked');
-            } else if (this.classList.contains('blocked')) {
-                this.className = '';
-                this.classList.add('tile', 'clear');
+
+
+    function changeTileType(e) {
+        if ((e.type === 'mousedown' || (e.type === 'mouseenter' && MOUSE_IS_DOWN)) || (e.type === 'ontouchstart' || e.type === 'ontouchmove')){    
+            // target_tile = document.getElementById(id);
+            target_tile = document.elementFromPoint(e.clientX, e.clientY);
+            // console.log(e.clientX.toString() + " " + e.clientY.toString())
+            
+            if (e.type === 'mousedown') {
+                if (target_tile.classList.contains('clear')) {
+                    TILE_TYPE_CLICKED = 'clear';
+                    target_tile.className = '';
+                    target_tile.classList.add('tile', 'blocked');
+                } else if (target_tile.classList.contains('blocked')) {
+                    TILE_TYPE_CLICKED = 'blocked';
+                    target_tile.className = '';
+                    target_tile.classList.add('tile', 'clear');
+                } else if (target_tile.classList.contains('start')){
+                    TILE_TYPE_CLICKED = 'start';
+                } else if (target_tile.classList.contains('goal')){
+                    TILE_TYPE_CLICKED = 'goal';
+                }
+                // console.log(TILE_TYPE_CLICKED)
+            } else if (e.type === 'mouseenter'){
+                if (TILE_TYPE_CLICKED === 'clear' && target_tile.classList.contains('clear')) {
+                    target_tile.className = '';
+                    target_tile.classList.add('tile', 'blocked');
+                } else if (TILE_TYPE_CLICKED === 'blocked' && target_tile.classList.contains('blocked')) {
+                    target_tile.className ='';
+                    target_tile.classList.add('tile', 'clear');
+                } else if (TILE_TYPE_CLICKED === 'start' && target_tile.classList.contains('clear')){
+                    let current_start = document.querySelector(".start");
+                    if (current_start != null) {current_start.classList.remove('start'); current_start.classList.add('clear');}
+                    target_tile.className = '';
+                    target_tile.classList.add('tile', 'start');
+                } else if (TILE_TYPE_CLICKED === 'goal' && target_tile.classList.contains('clear')) {
+                    let current_goal = document.querySelector(".goal");
+                    if (current_goal != null) {current_goal.classList.remove('goal'); current_goal.classList.add('clear');}
+                    target_tile.className = '';
+                    target_tile.classList.add('tile', 'goal');
+                }
             }
-        } else if (button_state == 'start'){
-            let current_start = document.querySelector(".start");
-            if (current_start != null) {current_start.classList.remove('start'); current_start.classList.add('clear');}
-            this.className = '';
-            this.classList.add('tile', 'start');
-        } else if (button_state == 'goal'){
-            let current_goal = document.querySelector(".goal");
-            if (current_goal != null) {current_goal.classList.remove('goal'); current_goal.classList.add('clear');}
-            this.className = '';
-            this.classList.add('tile', 'goal');
+            
         }
     }
+
 
 	function resetOpenClosedPathTiles(){
 		
@@ -321,15 +415,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 	}
 	
+    function randomObstacles(){
+        resetAllTiles();
+        for (index=0; index<grid.tile_ids.length; index++){
+			current_tile = document.getElementById(grid.tile_ids[index]);
+			let random_number = Math.random();
+            if (current_tile.classList.contains('clear') && random_number > 0.7){
+                current_tile.className = '';
+                current_tile.classList.add('tile', 'blocked');
+            }
+		}
+    }
+
 	function resetAllTiles(){
-		
-		message_field.textContent = '';
-		
+		resetOpenClosedPathTiles()
 		for (index=0; index<grid.tile_ids.length; index++){
 			current_tile = document.getElementById(grid.tile_ids[index]);
-			current_tile.className = '';
-			current_tile.classList.add('tile', 'clear');
-			
+            if (current_tile.classList.contains('blocked')){
+                current_tile.className = '';
+                current_tile.classList.add('tile', 'clear');
+            }     
 		}
 	}
 
@@ -370,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 current_node = node_list.list[came_from_node.node_id];
                 came_from_node = node_list.list[node_list.list[current_node.node_id].came_from_id];
                 came_from_element = tileElement(came_from_node.node_id);
-                console.log(path_list);
+                // console.log(path_list);
             }
         }
         return path_list;
@@ -401,8 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             start_tile_message = "Starting tile is located at row " + start_tile_row.toString() + " and col " + start_tile_col.toString();
             goal_tile_message = "Goal tile is located at row " + goal_tile_row.toString() + " and col " + goal_tile_col.toString();
-            console.log(start_tile_message);
-            console.log(goal_tile_message);
+            // console.log(start_tile_message);
+            // console.log(goal_tile_message);
 
             let total_node_list = new NodeList();
 
@@ -485,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             
             let current_path_list = currentPath(total_node_list, path_end.node_id);
-            console.log(current_path_list);
+            // console.log(current_path_list);
 
             
 			
@@ -500,7 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					}
 				}
 				
-				message_field.style.color = 'blue';
+				message_field.style.color = '#4d61ff';
 				message_field.textContent = 'Path to Goal successfully found!';
 			}else{
 				message_field.style.color = 'red';
@@ -509,14 +614,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         } else {
-            console.log('Please select a starting and goal tile');
+            // console.log('Please select a starting and goal tile');
 			message_field.style.color = 'red';
 			message_field.textContent = 'Please place a Start and Goal tile before clicking "Run"';
         }
     }
 
 
-    let button_state = 'blocked';
+    // let button_state = 'blocked';
 
     //create grid
     let grid = new TileGrid(25, 25, 20);
@@ -525,33 +630,42 @@ document.addEventListener('DOMContentLoaded', () => {
     let buttons = document.createElement('div');
     buttons.classList.add('button-box');
 
-    let reset_button = document.createElement('button');
-    reset_button.id = 'reset_button';
-    reset_button.textContent = 'Reset';
-	reset_button.addEventListener('click', resetAllTiles)
-    buttons.appendChild(reset_button);
+    let clear_button = document.createElement('button');
+    clear_button.id = 'clear_button';
+    clear_button.textContent = 'Clear';
+    clear_button.style.backgroundColor = '#ff6200';
+    clear_button.addEventListener('click', resetAllTiles)
+    buttons.appendChild(clear_button);
 	
-	let obstacle_button = document.createElement('button');
-    obstacle_button.id = 'obstacle_button';
-    obstacle_button.textContent = 'Place Obstacle';
-    obstacle_button.addEventListener('click', () => {button_state = 'blocked';})
-    buttons.appendChild(obstacle_button);
+	// let obstacle_button = document.createElement('button');
+    // obstacle_button.id = 'obstacle_button';
+    // obstacle_button.textContent = 'Place Obstacle';
+    // obstacle_button.addEventListener('click', () => {button_state = 'blocked';})
+    // buttons.appendChild(obstacle_button);
 
-    let start_button = document.createElement('button');
-    start_button.id = 'start_button';
-    start_button.textContent = 'Place Start';
-    start_button.addEventListener('click', () => {button_state = 'start';})
-    buttons.appendChild(start_button);
+    // let start_button = document.createElement('button');
+    // start_button.id = 'start_button';
+    // start_button.textContent = 'Place Start';
+    // start_button.addEventListener('click', () => {button_state = 'start';})
+    // buttons.appendChild(start_button);
 
-    let goal_button = document.createElement('button');
-    goal_button.id = 'goal_button';
-    goal_button.textContent = 'Place Goal';
-    goal_button.addEventListener('click', () => {button_state = 'goal';})
-    buttons.appendChild(goal_button);
+    // let goal_button = document.createElement('button');
+    // goal_button.id = 'goal_button';
+    // goal_button.textContent = 'Place Goal';
+    // goal_button.addEventListener('click', () => {button_state = 'goal';})
+    // buttons.appendChild(goal_button);
+
+    let random_button = document.createElement('button');
+    random_button.id = 'random_button';
+    random_button.textContent = 'Random';
+    random_button.style.backgroundColor = 'Purple';
+	random_button.addEventListener('click', randomObstacles)
+    buttons.appendChild(random_button);
 
     let run_button = document.createElement('button');
     run_button.id = 'run_button';
     run_button.textContent = 'Run';
+    run_button.style.backgroundColor = 'Red';
 	run_button.addEventListener('click', aStar)
     buttons.appendChild(run_button);
 	

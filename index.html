@@ -4,11 +4,33 @@
     <meta charset="utf-8">
     <script src="app.js" charset="utf-8"></script>
     <link rel="stylesheet" href="style.css"></link>
-    <title>A* Pathfinding</title>
+    <title>A* Pathfinding Demo</title>
   </head>
   <body>
+    <div class="main-content">
+      <h1>A* Pathfinding Demo</h1>
+      
+      <div class="desktop-directions">
+      <p>Click and drag on the tiles to draw obstacles.<br/>Click and drag on the obstacles to erase them.</p>
+      <p>Click and drag the <span style='color:green'>Start</span> and <span style='color:#4d61ff'>Goal</span> tiles to move them.</p>
+      <p>Click the <span style='color:#c23df2'>Random</span> button to randomly place obstacles.<br/>
+        Click the <span style='color:red'>Run</span> button to start pathfinding and the <span style='color:#ff6200'>Clear</span> button to clear the board.</p>
+      </div>
+      
+      <div class="mobile-directions">
+        <p>This demo is best experienced on a desktop browser.<br />If you <i>are</i> using a desktop browser, try expanding the
+          window to display desktop directions.</p>
+        <p>Tap the tiles below to place obstacles.<br/>Tap the tiles again to remove obstacles.</p>
+        <p>Tap the <span style='color:#c23df2'>Random</span> button to randomly place obstacles.<br />
+          Tap the <span style='color:red'>Run</span> button to start pathfinding and the <span
+            style='color:#ff6200'>Clear</span> button to clear the board.</p>
+      </div>
+      
+      <div id="canvas"></div>
 
-    <div id="canvas"></div>
+    </div>
+
+    
     
     
   
