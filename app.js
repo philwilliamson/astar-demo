@@ -199,87 +199,87 @@ document.addEventListener('DOMContentLoaded', () => {
         get_neighbor_ids(){
             //returns array of the nieghboring nodes
             let neighbor_list = [];
-			
-			let node_above_id = null;
-			let node_right_id = null;
-			let node_below_id = null;
-			let node_left_id = null;
-			
-			let node_aboveleft_id = null;
-			let node_aboveright_id = null;
-			let node_belowright_id = null;
-			let node_belowleft_id = null;
-			
-			//Add nodes directly adjacent
 
-			//Add node above to neighbor list if not blocked and this node not on top edge
-			if (this.node_coords[0] != 0){
-				node_above_id = this.node_id - grid.width;
-				if (!(tileElement(node_above_id).classList.contains('blocked'))){
-					neighbor_list.push(node_above_id);
-				}
-			}
-			
-			//Add node to right to neighbor list if not blocked and this node not on right edge
-			if (this.node_coords[1] != grid.width - 1){
-				node_right_id = this.node_id + 1;
-				if (!(tileElement(node_right_id).classList.contains('blocked'))){
-					neighbor_list.push(node_right_id);
-				}
-			}
-			
-			//Add node to below to neighbor list if not blocked and this node not on bottom edge
-			if (this.node_coords[0] != grid.height - 1){
-				node_below_id = this.node_id + grid.width;
-				if (!(tileElement(node_below_id).classList.contains('blocked'))){
-					neighbor_list.push(node_below_id);
-				}
-			}
-			
-			//Add node to left to neighbor list if not blocked and this node not on left edge
-			if (this.node_coords[1] != 0){
-				node_left_id = this.node_id - 1;
-				if (!(tileElement(node_left_id).classList.contains('blocked'))){
-					neighbor_list.push(node_left_id);
-				}
-			}
+            let node_above_id = null;
+            let node_right_id = null;
+            let node_below_id = null;
+            let node_left_id = null;
+            
+            let node_aboveleft_id = null;
+            let node_aboveright_id = null;
+            let node_belowright_id = null;
+            let node_belowleft_id = null;
+            
+            //Add nodes directly adjacent
 
-			//Check and add diagonal nodes
-			//Check above left node
-			if (neighbor_list.includes(node_above_id) && neighbor_list.includes(node_left_id)){
-				node_aboveleft_id = node_above_id - 1
-				if (!(tileElement(node_aboveleft_id).classList.contains('blocked'))){
-					neighbor_list.push(node_aboveleft_id);
-				}
-				
-			}
-			
-			//Check above right node
-			if (neighbor_list.includes(node_above_id) && neighbor_list.includes(node_right_id)){
-				node_aboveright_id = node_above_id + 1
-				if (!(tileElement(node_aboveright_id).classList.contains('blocked'))){
-					neighbor_list.push(node_aboveright_id);
-				}
-				
-			}
-			
-			//Check below right node
-			if (neighbor_list.includes(node_below_id) && neighbor_list.includes(node_right_id)){
-				node_belowright_id = node_below_id + 1
-				if (!(tileElement(node_belowright_id).classList.contains('blocked'))){
-					neighbor_list.push(node_belowright_id);
-				}
-				
-			}
-			
-			//Check below left node
-			if (neighbor_list.includes(node_below_id) && neighbor_list.includes(node_left_id)){
-				node_belowleft_id = node_below_id - 1
-				if (!(tileElement(node_belowleft_id).classList.contains('blocked'))){
-					neighbor_list.push(node_belowleft_id);
-				}
-				
-			}
+            //Add node above to neighbor list if not blocked and this node not on top edge
+            if (this.node_coords[0] != 0){
+                node_above_id = this.node_id - grid.width;
+                if (!(tileElement(node_above_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_above_id);
+                }
+            }
+            
+            //Add node to right to neighbor list if not blocked and this node not on right edge
+            if (this.node_coords[1] != grid.width - 1){
+                node_right_id = this.node_id + 1;
+                if (!(tileElement(node_right_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_right_id);
+                }
+            }
+            
+            //Add node to below to neighbor list if not blocked and this node not on bottom edge
+            if (this.node_coords[0] != grid.height - 1){
+                node_below_id = this.node_id + grid.width;
+                if (!(tileElement(node_below_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_below_id);
+                }
+            }
+            
+            //Add node to left to neighbor list if not blocked and this node not on left edge
+            if (this.node_coords[1] != 0){
+                node_left_id = this.node_id - 1;
+                if (!(tileElement(node_left_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_left_id);
+                }
+            }
+
+            //Check and add diagonal nodes
+            //Check above left node
+            if (neighbor_list.includes(node_above_id) && neighbor_list.includes(node_left_id)){
+                node_aboveleft_id = node_above_id - 1
+                if (!(tileElement(node_aboveleft_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_aboveleft_id);
+                }
+                
+            }
+            
+            //Check above right node
+            if (neighbor_list.includes(node_above_id) && neighbor_list.includes(node_right_id)){
+                node_aboveright_id = node_above_id + 1
+                if (!(tileElement(node_aboveright_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_aboveright_id);
+                }
+                
+            }
+            
+            //Check below right node
+            if (neighbor_list.includes(node_below_id) && neighbor_list.includes(node_right_id)){
+                node_belowright_id = node_below_id + 1
+                if (!(tileElement(node_belowright_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_belowright_id);
+                }
+                
+            }
+            
+            //Check below left node
+            if (neighbor_list.includes(node_below_id) && neighbor_list.includes(node_left_id)){
+                node_belowleft_id = node_below_id - 1
+                if (!(tileElement(node_belowleft_id).classList.contains('blocked'))){
+                    neighbor_list.push(node_belowleft_id);
+                }
+                
+            }
 
             return neighbor_list;
         }
@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //make sure tiles are reset except for blocking ones
         resetOpenClosedPathTiles();
 		
-		let start_tile_element = document.querySelector(".start");
+        let start_tile_element = document.querySelector(".start");
         let goal_tile_element = document.querySelector(".goal");
 
         let total_node_list = new NodeList();
@@ -577,7 +577,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     tile_element.classList.add('closed');
                 }
             }
-
         }
         
         //generate path list from end node
