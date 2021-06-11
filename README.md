@@ -15,8 +15,8 @@ Refresh page for a new run.
 
 ## Project Structure
 
-app.js | JavaScript file where main logic is written
-index.html | HTML file for defining starting elements on page
+app.js | JavaScript file where main logic is written  
+index.html | HTML file for defining startingelements on page  
 style.css | CSS file for styling page
 
 ## Development notes
