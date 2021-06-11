@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function preventPageDrag(e) {
         e.preventDefault(); 
-    };
+    }
 
     window.addEventListener("mousedown",(e)=>{
         //set global variable to true when mouse is clicked down
         MOUSE_IS_DOWN = true;
-    })
+    });
 
     window.addEventListener("mouseup",(e)=>{
         //set global variable again when mouse is clicked up
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //make sure user isn't selecting anything when clicking and dragging
         if (window.getSelection) {window.getSelection().removeAllRanges();}
         else if (document.selection) {document.selection.empty();}
-    })
+    });
 
     //Functions and event listeners for touch screens
     var LAST_TILE_CHANGED = null;
@@ -402,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             }
         }
-
     }
 
     //helper functions
@@ -416,10 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		message_field.textContent = '';
 		for (index=0; index<grid.tile_ids.length; index++){
 			current_tile = document.getElementById(grid.tile_ids[index]);
-			current_tile.classList.remove('open', 'closed', 'path');
-			
+			current_tile.classList.remove('open', 'closed', 'path');	
 		}
-		
 	}
 	
     function randomObstacles(){
@@ -438,13 +435,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	function resetAllTiles(){
 		//resent all tiles other than start and goal tiles
         resetOpenClosedPathTiles()
-		for (index=0; index<grid.tile_ids.length; index++){
-			current_tile = document.getElementById(grid.tile_ids[index]);
+        for (index=0; index<grid.tile_ids.length; index++){
+            current_tile = document.getElementById(grid.tile_ids[index]);
             if (current_tile.classList.contains('blocked')){
                 current_tile.className = '';
                 current_tile.classList.add('tile', 'clear');
             }     
-		}
+        }
 	}
 
 	function nodeId(node_coords){
@@ -500,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function aStar(){
-		//main function for A* algorithm, acts on global instance of grid object
+        //main function for A* algorithm, acts on global instance of grid object
         
         message_field.textContent = '';
 
@@ -619,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clear_button.id = 'clear_button';
     clear_button.textContent = 'Clear';
     clear_button.style.backgroundColor = '#ff6200';
-    clear_button.addEventListener('click', resetAllTiles)
+    clear_button.addEventListener('click', resetAllTiles);
     buttons.appendChild(clear_button);
 
     //button for randomly generating blocked tiles, good for touch screens
@@ -627,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     random_button.id = 'random_button';
     random_button.textContent = 'Random';
     random_button.style.backgroundColor = 'Purple';
-	random_button.addEventListener('click', randomObstacles)
+    random_button.addEventListener('click', randomObstacles);
     buttons.appendChild(random_button);
 
     //button for running pathfinding
@@ -635,7 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
     run_button.id = 'run_button';
     run_button.textContent = 'Run';
     run_button.style.backgroundColor = 'Red';
-	run_button.addEventListener('click', aStar)
+    run_button.addEventListener('click', aStar);
     buttons.appendChild(run_button);
 	
 
