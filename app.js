@@ -423,17 +423,17 @@ document.addEventListener('DOMContentLoaded', () => {
         //randomly generate blocked tiles
         resetAllTiles();
         for (index=0; index<grid.tile_ids.length; index++){
-			current_tile = document.getElementById(grid.tile_ids[index]);
-			let random_number = Math.random();
+            current_tile = document.getElementById(grid.tile_ids[index]);
+            let random_number = Math.random();
             if (current_tile.classList.contains('clear') && random_number > 0.7){
                 current_tile.className = '';
                 current_tile.classList.add('tile', 'blocked');
             }
-		}
+        }
     }
 
-	function resetAllTiles(){
-		//resent all tiles other than start and goal tiles
+    function resetAllTiles(){
+        //reset all tiles other than start and goal tiles
         resetOpenClosedPathTiles()
         for (index=0; index<grid.tile_ids.length; index++){
             current_tile = document.getElementById(grid.tile_ids[index]);
@@ -442,14 +442,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 current_tile.classList.add('tile', 'clear');
             }     
         }
-	}
+    }
 
-	function nodeId(node_coords){
+    function nodeId(node_coords){
         //get node id based on coordinates
-		let node_row = node_coords[0];
-		let node_col = node_coords[1];
-		return node_row*grid.width + node_col;
-	}
+        let node_row = node_coords[0];
+        let node_col = node_coords[1];
+        return node_row*grid.width + node_col;
+    }
 
     function tileNumber(tile_element){
         //get tile number based on element
