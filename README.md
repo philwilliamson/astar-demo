@@ -13,6 +13,12 @@ Use the buttons to the right to change the type of square that will be placed.
 Click "Run" to run the algorithm.
 Refresh page for a new run.
 
+## Project Structure
+
+app.js | JavaScript file where main logic is written
+index.html | HTML file for defining starting elements on page
+style.css | CSS file for styling page
+
 ## Development notes
 
 Interface has been improved to allow dragging and drawing of tiles on grid.
