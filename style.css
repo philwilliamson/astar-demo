@@ -7,13 +7,9 @@
   color: #fff;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  /* justify-content: center;
-	justify-items: center;
-	text-align: center; */
 }
 
 h1 {
-  /* text-align: center; */
   margin-left: calc(var(--content-push-right) + 50px);
 }
 
@@ -42,7 +38,6 @@ p {
 
 .tile.clear {
   background-color: cyan;
-  /* animation: clear-tile-pop 0.5s; */
 }
 
 @keyframes clear-tile-pop {
@@ -59,7 +54,6 @@ p {
 
 .tile.blocked {
   background-color: black;
-  /* animation: blocked-tile-pop 0.5s; */
 }
 
 @keyframes blocked-tile-pop {
